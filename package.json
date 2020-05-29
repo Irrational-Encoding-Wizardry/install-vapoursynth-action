@@ -1,0 +1,16 @@
+{
+  "name": "install-vapoursynth-action",
+  "version": "1.0.0",
+  "description": "Installs VapourSynth in the current runner",
+  "main": "src/index.js",
+  "repository": "git@github.com:Irrational-Encoding-Wizardry/install-vapoursynth-action",
+  "author": "StuxCrystal (Roland Netzsch) <stuxcrystal@encode.moe>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@actions/cache": "^0.2.1",
+    "@actions/core": "^1.2.4",
+    "@actions/exec": "^1.0.4"
+  },
+  "devDependencies": {}
+}

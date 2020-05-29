@@ -1,0 +1,13 @@
+name: 'Install VapourSynth'
+description: 'Install VapourSynth on the current runner'
+inputs:
+  version:
+    description: 'The version to install'
+    required: true
+    default: 'latest'
+outputs:
+  version:
+    description: 'Contains the actually installed version'
+runs:
+  using: 'node12'
+  main: 'index.js'
