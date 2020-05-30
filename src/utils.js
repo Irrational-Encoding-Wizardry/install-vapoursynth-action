@@ -15,3 +15,7 @@ export async function lsb_version() {
     }
 }
 
+
+export async function get_current_minor() {
+    return require('./version').VERSION.split(".").slice(0, 2).join(".");
+}
