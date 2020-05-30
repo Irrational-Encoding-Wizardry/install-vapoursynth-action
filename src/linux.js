@@ -16,7 +16,7 @@ function readBody(response) {
 }
 
 function get_container_from_id(id) {
-    return "/tmp/" + id + "-git";
+    return "/tmp/" + id + "-git/";
 }
 
 
@@ -49,11 +49,7 @@ export async function install(link, id, branch, configures="", with_py_module=fa
 
     core.startGroup("Installing library: " + id);
    try {
-        core.info(cc);
-        core.info(container);
-        core.info(typeof container);
-        await io.mkdirP(container);
-        const cacheKey = await cache.restoreCache(cc, [container]);
+        const cacheKey = await cache.restoreCache([container], cc);
         if (cacheKey === undefined) {
             await downloadAndCompile(link, id, branch, configures);
         }
