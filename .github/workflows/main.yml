@@ -35,6 +35,10 @@ jobs:
           python-version: 3.7
         - vs-version: 46
           python-version: 3.7
+        - vs-version: 45.1
+          python-version: 3.7
+        - vs-version: 45.0
+          python-version: 3.7
         - vs-version: 45
           python-version: 3.7
         - vs-version: 44
