@@ -1,5 +1,8 @@
 name: 'Install VapourSynth'
 description: 'Install VapourSynth on the current runner'
+icon: arrow-down-circle
+color: blue
+
 inputs:
   version:
     description: 'The version to install'
