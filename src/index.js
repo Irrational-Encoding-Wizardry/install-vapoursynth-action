@@ -20,4 +20,4 @@ const { VS_ALIASES, VS_VERSIONS } = require('./vs_versions');
     }
 
     core.setOutput('version', version.minor);
-})().catch((e) => {core.setFailed(e.toString())});
+})().catch((e) => {console.error(e); core.setFailed("installation failed unexpectedly.");});
