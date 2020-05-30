@@ -20,26 +20,26 @@ function get_container_from_id(id) {
 }
 
 
-export async function downloadAndCompile(link, id, branch, configures="") {
+export async function downloadAndCompile(link, id, branch, configures=[]) {
     const container = get_container_from_id(id);
 
     
     core.info("Cloning " + id);
-    await exec('git clone', [link, '--depth', '1', '--branch', branch, container]);
+    await exec('git', ['clone', link, '--depth', '1', '--branch', branch, container]);
 
     core.info("Compiling " + id);
-    await exec('bash', ['-c', '"cd ' + container + '; ./autogen.sh"']);
-    await exec('bash', ['-c', '"cd ' + container + '; ./configure --prefix=/usr ' + configures + '"']);
-    await exec('bash', ['-c', '"cd ' + container + '; make"']);
+    await exec('./autogen.sh', [], {cwd: container});
+    await exec('./configure', ["--prefix=/usr"].concat(configures), {cwd: container});
+    await exec("make", [], {cwd: container});
 }
 
 export async function installTarget(id, with_py_module) {
     const container = get_container_from_id(id);
 
     core.info("Installing " + id);
-    await exec('bash', ['-c', '"cd ' + container + '; sudo make install"']);
+    await exec('sudo', ['make', 'install'], {cwd: container});
     if (with_py_module)
-        await exec('bash', ['-c', '"cd ' + container + '; pip install ."']);
+        await exec('pip', ['install', '.'], {cwd: container});
 }
 
 
@@ -69,5 +69,5 @@ export async function run(config) {
     const zimg_branch = config.zimg_branch;
 
     await install("https://github.com/sekrit-twc/zimg", "zimg", zimg_branch);
-    await install("https://github.com/vapoursynth/vapoursynth", "vs", vsbranch, "--without-vsscript --without-python-module", true);
+    await install("https://github.com/vapoursynth/vapoursynth", "vs", vsbranch, ["--without-vsscript", "--without-python-module"], true);
 }
