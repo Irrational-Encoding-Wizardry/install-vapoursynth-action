@@ -48,7 +48,9 @@ export async function install(link, id, branch, configures="", with_py_module=fa
 
     core.startGroup("Installing library: " + id);
    try {
-        core.info(cc, container);
+        core.info(cc);
+        core.info(container);
+        core.info(typeof container);
         const cacheKey = await cache.restoreCache(cc, [container]);
         if (cacheKey === undefined) {
             await downloadAndCompile(link, id, branch, configures);
