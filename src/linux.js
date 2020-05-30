@@ -71,5 +71,5 @@ export async function run(config) {
     const zimg_branch = config.zimg_branch;
 
     await install("https://github.com/sekrit-twc/zimg", "zimg", zimg_branch);
-    await install("https://github.com/vapoursynth/vapoursynth", "vs", vs_branch, ["--without-vsscript", "--without-python-module"], true);
+    await install("https://github.com/vapoursynth/vapoursynth", "vs", vs_branch, ["--disable-vsscript", "--disable-python-module"], true);
 }
