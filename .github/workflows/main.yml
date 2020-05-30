@@ -1,0 +1,64 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Run tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-16.04, ubuntu-18.04, windows-latest]
+        vs-version: [latest, 50, 49, 48, 47, 47.2, 47.1, 47.0, 46, 45, 44, 43, 42.1, 42]
+        include:
+        - vs-version: latest
+          python-version: 3.8
+        - vs-version: 50
+          python-version: 3.8
+        - vs-version: 49
+          python-version: 3.7
+        - vs-version: 48
+          python-version: 3.7
+        - vs-version: 47
+          python-version: 3.7
+        - vs-version: 47.2
+          python-version: 3.7
+        - vs-version: 47.1
+          python-version: 3.7
+        - vs-version: 47.0
+          python-version: 3.7
+        - vs-version: 46
+          python-version: 3.7
+        - vs-version: 45
+          python-version: 3.7
+        - vs-version: 44
+          python-version: 3.6
+        - vs-version: 43
+          python-version: 3.6
+        - vs-version: 42.1
+          python-version: 3.6
+        - vs-version: 42.0
+          python-version: 3.6
+        - vs-version: 42
+          python-version: 3.6
+
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Try installing
+      uses: ./
+      with:
+        version: ${{ matrix.vs-version }}
+    - name: Attempt using VapourSynth
+      run: |
+        python -c 'import vapoursynth; vapoursynth.core.version_number()'
