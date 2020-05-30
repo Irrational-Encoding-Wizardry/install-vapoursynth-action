@@ -7,15 +7,18 @@ export const VS_ALIASES = {
 export const VS_VERSIONS = {
     "50": {
         pypi_version: "50",
+        minor: "50",
         vs_branch: "R50",
         zimg_branch: "v2.9"
     },
     "49": {
+        minor: "49",
         pypi_version: "49",
         vs_branch: "R49",
         zimg_branch: "v2.8"
     },
     "48": {
+        minor: "48",
         pypi_version: "48",
         vs_branch: "R48",
         zimg_branch: "v2.8"
@@ -39,21 +42,25 @@ export const VS_VERSIONS = {
         zimg_branch: "v2.8"
     },
     "46": {
+        minor: "46",
         pypi_version: "46",
         vs_branch: "R46",
         zimg_branch: "v2.8"
     },
     "45": {
+        minor: "45",
         pypi_version: "45",
         vs_branch: "R45",
         zimg_branch: "v2.8"
     },
     "44": {
+        minor: "44",
         pypi_version: "44",
         vs_branch: "R44",
         zimg_branch: "v2.8"
     },
     "43": {
+        minor: "43",
         pypi_version: "43",
         vs_branch: "R43",
         zimg_branch: "v2.7"

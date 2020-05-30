@@ -18,4 +18,6 @@ const { VS_ALIASES, VS_VERSIONS } = require('./vs_versions');
     } else {
         await require('./linux').run(version);
     }
+
+    core.setOutput('version', version.minor);
 })().catch((e) => {core.setFailed(e.toString())});
