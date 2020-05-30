@@ -1,3 +1,4 @@
+const io = require('@actions/io');
 const core = require('@actions/core');
 const { exec } = require('@actions/exec');
 const artifact = require('@actions/artifact');
@@ -32,11 +33,13 @@ async function downloadAndCompile(link, id, branch, configures=[], prereqs=null,
 }
 
 async function cache(id, branch) {
+
     const container = get_container_from_id(id);
     const artifact_name_suffix = [branch, "ubuntu", await lsb_version(), "compiled.tar"].join("--")
-    const tar_path = get_container_from_id(id, artifact_name_suffix);
+
+    await io.mkdirP("/tmp/artifacts");
+    const tar_path = "/tmp/artifacts/" + id + " -- " + artifact_name_suffix;
     await exec("tar", ["-zcf", tar_path, container]);
-    await client.uploadArtifact(id + "--" + artifact_name_suffix, [tar_path], "/tmp");
 }
 
 async function build(link, id, branch, configures="", with_py_module=false) {

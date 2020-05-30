@@ -56,3 +56,8 @@ jobs:
     - name: Attempt using VapourSynth
       run: |
         python -c "import vapoursynth; vapoursynth.core.version_number()"
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Tools
+        path: /tmp/artifacts
