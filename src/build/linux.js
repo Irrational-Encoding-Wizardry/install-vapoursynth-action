@@ -9,12 +9,10 @@ function get_container_from_id(id, suffix="-git/") {
     return "/tmp/" + id + suffix;
 }
 
-const client = artifact.create()
-
-async function downloadAndCompile(link, id, branch, configures=[], prereqs=null, cb=null) {
+async function downloadAndCompile(link, id, branch, configures=[], cbs={}) {
     const container = get_container_from_id(id);
 
-    if (!!prereqs) {
+    if (!!cbs.pre) {
         await prereqs(container);
     }
     
@@ -27,7 +25,7 @@ async function downloadAndCompile(link, id, branch, configures=[], prereqs=null,
     await exec("make", [], {cwd: container});
     await exec("sudo", ["make", "install"], {cwd: container});
 
-    if (!!cb) {
+    if (!!cbs.post) {
         await cb(container);
     }
 }
@@ -42,10 +40,10 @@ async function cache(id, branch) {
     await exec("tar", ["-zcf", tar_path, container]);
 }
 
-async function build(link, id, branch, configures="", with_py_module=false) {
+async function build(link, id, branch, configures="", cbs={}) {
     core.startGroup("Installing Building Tool for: " + id+"@"+branch);
    try {
-        await downloadAndCompile(link, id, branch, configures);
+        await downloadAndCompile(link, id, branch, configures, cbs);
         await cache(id, branch);
     } finally {
         core.endGroup();
@@ -58,12 +56,15 @@ export async function run(config) {
     const zimg_branch = config.zimg_branch;
 
     await build("https://github.com/sekrit-twc/zimg", "zimg", zimg_branch, [], false);
-    await build("https://github.com/vapoursynth/vapoursynth", "vs", vs_branch, ["--disable-vsscript", "--disable-python-module"], true, async()=>{
-        core.info("Ensuring existence of nasm...");
-        await exec("sudo", ["apt-get", "install", "--yes", "nasm"]);
-    }, async(path)=>{
-        core.info("Building python package.");
-        await exec("pip" ["install", "cython", "wheel"]);
-        await exec("python", ["setup.py", "bdist_wheel"], {cwd: path});
+    await build("https://github.com/vapoursynth/vapoursynth", "vs", vs_branch, ["--disable-vsscript", "--disable-python-module"], {
+        pre: async()=>{
+            core.info("Ensuring existence of nasm...");
+            await exec("sudo", ["apt-get", "install", "--yes", "nasm"]);
+        },
+        post: async(path)=>{
+            core.info("Building python package.");
+            await exec("pip" ["install", "cython", "wheel"]);
+            await exec("python", ["setup.py", "bdist_wheel"], {cwd: path});
+        }
     });
 }
