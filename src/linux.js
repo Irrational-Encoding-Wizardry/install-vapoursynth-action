@@ -54,8 +54,8 @@ export async function installTarget(id, with_py_module) {
 const actually_use_cache = {
     access: cache.restoreCache,
     async push(files, key) {
-        if ((await cache.restoreCache(files, cc)) === undefined)
-            await cache.saveCache(files, cc);
+        if ((await cache.restoreCache(files, key)) === undefined)
+            await cache.saveCache(files, key);
     }
 }
 

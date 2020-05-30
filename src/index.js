@@ -16,9 +16,9 @@ const { VS_ALIASES, VS_VERSIONS } = require('./vs_versions');
     const with_cache = core.getInput("cache") == 'true';
 
     if (process.platform == 'win32') {
-        await require('./windows').run(version);
+        await require('./windows').run(version, with_cache);
     } else {
-        await require('./linux').run(version);
+        await require('./linux').run(version, with_cache);
     }
 
     core.setOutput('version', version.minor);
