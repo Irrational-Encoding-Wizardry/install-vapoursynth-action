@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-16.04, ubuntu-18.04, windows-latest]
+        os: [ubuntu-18.04, windows-latest]
         vs-version: [latest, 50, 49, 48, 47, 47.2, 47.1, 47.0, 46, 45, 44, 43, 42.1, 42]
         include:
         - vs-version: latest
