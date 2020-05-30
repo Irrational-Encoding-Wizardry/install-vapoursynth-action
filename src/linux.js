@@ -69,17 +69,16 @@ const skip_cache = {
 }
 
 
-export async function install(link, id, branch, configures="", with_py_module=false, cache=actually_use_cache) {
+export async function install(link, id, branch, configures="", with_py_module=false, cacheSystem=actually_use_cache) {
     const container = get_container_from_id(id);
     const cc = "install-vapoursynth--linux-" + (await lsb_version()) + "--" + id + "--" + branch;
 
     core.startGroup("Installing library: " + id+"@"+branch);
    try {
-        const cacheKey = await cache.restoreCache([container], cc);
+        const cacheKey = await cacheSystem.access([container], cc);
         if (cacheKey === undefined) {
             await downloadAndCompile(link, id, branch, configures);
-            if ((await cache.restoreCache([container], cc)) === undefined)
-                await cache.saveCache([container], cc);
+            await cacheSystem.push([container], cc);
         }
 
         await installTarget(id, with_py_module);
