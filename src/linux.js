@@ -16,7 +16,6 @@ async function lsb_version() {
     for (let d of data.split("\n")) {
         let [n, v] = d.split("=");
         if (n != "DISTRIB_RELEASE") continue;
-
         return v;
     }
 }
@@ -61,7 +60,8 @@ export async function install(link, id, branch, configures="", with_py_module=fa
         const cacheKey = await cache.restoreCache([container], cc);
         if (cacheKey === undefined) {
             await downloadAndCompile(link, id, branch, configures);
-            await cache.saveCache([container], cc);
+            if ((await cache.restoreCache([container], cc)) === undefined)
+                await cache.saveCache([container], cc);
         }
 
         await installTarget(id, with_py_module);
