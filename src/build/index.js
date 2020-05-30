@@ -13,8 +13,8 @@ const { VS_ALIASES, VS_VERSIONS } = require('../vs_versions');
         version = VS_VERSIONS[VS_ALIASES[input]];
 
     if (process.platform == 'win32') {
-        await require('./windows').run(version, with_cache);
+        await require('./windows').run(version);
     } else {
-        await require('./linux').run(version, with_cache);
+        await require('./linux').run(version);
     }
 })().catch((e) => {console.error(e); core.setFailed("installation failed unexpectedly.");});
