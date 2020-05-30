@@ -55,7 +55,7 @@ export async function install(link, id, branch, configures="", with_py_module=fa
     const container = get_container_from_id(id);
     const cc = "install-vapoursynth--linux-" + (await lsb_version()) + "--" + id + "--" + branch;
 
-    core.startGroup("Installing library: " + id);
+    core.startGroup("Installing library: " + id+"@"+branch);
    try {
         const cacheKey = await cache.restoreCache([container], cc);
         if (cacheKey === undefined) {
