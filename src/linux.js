@@ -51,7 +51,7 @@ export async function installTarget(id, with_py_module) {
 }
 
 
-actually_use_cache = {
+const actually_use_cache = {
     access: cache.restoreCache,
     async push(files, key) {
         if ((await cache.restoreCache([container], cc)) === undefined)
@@ -59,7 +59,7 @@ actually_use_cache = {
     }
 }
 
-skip_cache = {
+const skip_cache = {
     async access(files, key) {
         return undefined;
     },
