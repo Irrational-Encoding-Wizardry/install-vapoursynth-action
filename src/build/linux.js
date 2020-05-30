@@ -13,7 +13,7 @@ async function downloadAndCompile(link, id, branch, configures=[], cbs={}) {
     const container = get_container_from_id(id);
 
     if (!!cbs.pre) {
-        await prereqs(container);
+        await cbs.pre(container);
     }
     
     core.info("Cloning " + id);
@@ -26,7 +26,7 @@ async function downloadAndCompile(link, id, branch, configures=[], cbs={}) {
     await exec("sudo", ["make", "install"], {cwd: container});
 
     if (!!cbs.post) {
-        await cb(container);
+        await cb.post(container);
     }
 }
 
