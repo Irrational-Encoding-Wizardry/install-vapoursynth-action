@@ -43,7 +43,7 @@ jobs:
         - vs-version: 44
           python-version: 3.6
         exclude:
-        - vs-version: 47.1
+        - vs-version: 47.0
           os: ubuntu-18.04
 
 
