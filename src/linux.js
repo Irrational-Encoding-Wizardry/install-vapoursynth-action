@@ -1,19 +1,26 @@
+const fs = require('fs');
 const io = require('@actions/io');
 const core = require('@actions/core');
 const cache = require('@actions/cache');
 const { exec } = require('@actions/exec');
 
 
-function readBody(response) {
-    const message = response.message;
-    return new Promise(async(rs, rj) => {
-        let output = Buffer.alloc(0);
-        message.on('data', (chunk) => {
-            output = Buffer.concat([output, chunk]);
+async function lsb_version() {
+    const fileContents = await new Promise((rs, rj) => {
+        fs.readFile('/etc/lsb-release', (err, data) => {
+            if (!!err) rj(err);
+            rs(data);
         });
-        message.on('end', ()=>rs(output));
     });
+    const data = fileContents.toString();
+    for (let d of data.split("\n")) {
+        let [n, v] = d.split("=")[1];
+        if (n != "VERSION_ID") continue;
+
+        return v = v.substring(1, v.length-1);
+    }
 }
+
 
 function get_container_from_id(id) {
     return "/tmp/" + id + "-git/";
@@ -47,7 +54,7 @@ export async function installTarget(id, with_py_module) {
 
 export async function install(link, id, branch, configures="", with_py_module=false) {
     const container = get_container_from_id(id);
-    const cc = "install-vapoursynth--linux--" + id + "--" + branch;
+    const cc = "install-vapoursynth--linux-" + (await lsb_version()) + "--" + id + "--" + branch;
 
     core.startGroup("Installing library: " + id);
    try {
