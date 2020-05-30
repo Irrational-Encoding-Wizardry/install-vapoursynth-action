@@ -13,7 +13,7 @@ const { VS_ALIASES, VS_VERSIONS } = require('./vs_versions');
     if (!version)
         version = VS_VERSIONS[VS_ALIASES[input]];
 
-    const with_cache = core.getInput("cache-compile") == 'true';
+    const with_cache = core.getInput("cache") == 'true';
 
     if (process.platform == 'win32') {
         await require('./windows').run(version);
