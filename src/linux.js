@@ -15,7 +15,7 @@ function readBody(response) {
 }
 
 function get_container_from_id(id) {
-    return "/tmp/" + id + "-unzipped";
+    return "/tmp/" + id + "-git";
 }
 
 
@@ -44,15 +44,21 @@ export async function installTarget(id, with_py_module) {
 
 export async function install(link, id, branch, configures="", with_py_module=false) {
     const container = get_container_from_id(id);
-    const cc = "install-vapoursynth--linux--" + id
+    const cc = "install-vapoursynth--linux--" + id;
 
-    const cacheKey = await cache.restoreCache(cc, [container]);
-    if (cacheKey === undefined) {
-        await downloadAndCompile(link, id, branch, configures);
+    core.startGroup("Installing library" + id);
+    try {
+        core.info(cc, [container]);
+        const cacheKey = await cache.restoreCache(cc, [container]);
+        if (cacheKey === undefined) {
+            await downloadAndCompile(link, id, branch, configures);
+        }
+        await cache.saveCache([container], cc);
+
+        await installTarget(id, with_py_module);
+    } finally {
+        core.endGroup();
     }
-    await cache.saveCache([container], cc);
-
-    await installTarget(id, with_py_module);
 }
 
 
