@@ -14,10 +14,10 @@ async function lsb_version() {
     });
     const data = fileContents.toString();
     for (let d of data.split("\n")) {
-        let [n, v] = d.split("=")[1];
-        if (n != "VERSION_ID") continue;
+        let [n, v] = d.split("=");
+        if (n != "DISTRIB_RELEASE") continue;
 
-        return v = v.substring(1, v.length-1);
+        return v;
     }
 }
 
