@@ -21,7 +21,7 @@ jobs:
         - vs-version: 50
           python-version: 3.8
         - vs-version: 49
-          python-version: 3.7
+          python-version: 3.8
         - vs-version: 48
           python-version: 3.7
         - vs-version: 47
