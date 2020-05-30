@@ -3,8 +3,7 @@
 name: Run tests
 
 on:
-  push:
-    branches: [ master ]
+  push: {}
   pull_request:
     branches: [ master ]
 
@@ -13,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, windows-latest]
+        os: [ubuntu-18.04]
         vs-version: [latest, 50, 49, 48, 47, 47.2, 47.1, "47.0", 46, 45.1, "45.0", 45, 44]
         include:
         - vs-version: latest
@@ -53,15 +52,12 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Compile
+    - name: Build and Compile VapourSynth
+      env:
+        REQUESTED_VS_VERSION: ${{ matrix.vs-version }}
       run: |
         npm install
-        npm run build
-    - name: Try installing
-      uses: ./
-      with:
-        version: ${{ matrix.vs-version }}
-        cache: false
+        npm run compile
     - name: Attempt using VapourSynth
       run: |
-        python -c 'import vapoursynth; vapoursynth.core.version_number()'
+        python -c "import vapoursynth; vapoursynth.core.version_number()"
