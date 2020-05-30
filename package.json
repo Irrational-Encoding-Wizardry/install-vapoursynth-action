@@ -1,6 +1,6 @@
 {
   "name": "install-vapoursynth-action",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Installs VapourSynth in the current runner",
   "main": "src/index.js",
   "repository": "git@github.com:Irrational-Encoding-Wizardry/install-vapoursynth-action",
