@@ -23,6 +23,8 @@ function get_container_from_id(id) {
 export async function downloadAndCompile(link, id, branch, configures=[]) {
     const container = get_container_from_id(id);
 
+    core.info("Ensuring existence of nasm...");
+    await exec("sudo", ["apt-get", "install", "--yes", "nasm"]);
     
     core.info("Cloning " + id);
     await exec('git', ['clone', link, '--depth', '1', '--branch', branch, container]);
