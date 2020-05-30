@@ -3,7 +3,8 @@
 name: Run tests
 
 on:
-  push: {}
+  push:
+    branches: [ master, v* ]
   pull_request:
     branches: [ master ]
 
