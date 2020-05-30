@@ -69,6 +69,7 @@ jobs:
       uses: ./
       with:
         version: ${{ matrix.vs-version }}
+        use-cache: false
     - name: Attempt using VapourSynth
       run: |
         python -c 'import vapoursynth; vapoursynth.core.version_number()'

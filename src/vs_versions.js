@@ -68,12 +68,12 @@ export const VS_VERSIONS = {
     },
     "43": {
         minor: "43",
-        pypi_version: "43",
+        pypi_version: "43.0.0.1",
         vs_branch: "R43",
         zimg_branch: "v2.7"
     },
     "42.1": {
-        pypi_version: "42.1",
+        pypi_version: "42",
         minor: "42.1",
         vs_branch: "R42.1",
         zimg_branch: "v2.7"
