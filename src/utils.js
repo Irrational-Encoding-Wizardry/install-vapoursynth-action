@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 export async function lsb_version() {
     const fileContents = await new Promise((rs, rj) => {
         fs.readFile('/etc/lsb-release', (err, data) => {
