@@ -1,7 +1,6 @@
 const io = require('@actions/io');
 const core = require('@actions/core');
 const { exec } = require('@actions/exec');
-const artifact = require('@actions/artifact');
 
 const { lsb_version } = require('../utils');
 
@@ -26,7 +25,7 @@ async function downloadAndCompile(link, id, branch, configures=[], cbs={}) {
     await exec("sudo", ["make", "install"], {cwd: container});
 
     if (!!cbs.post) {
-        await cb.post(container);
+        await cbs.post(container);
     }
 }
 

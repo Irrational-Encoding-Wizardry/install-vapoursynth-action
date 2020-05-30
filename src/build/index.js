@@ -17,4 +17,4 @@ const { VS_ALIASES, VS_VERSIONS } = require('../vs_versions');
     } else {
         await require('./linux').run(version);
     }
-})().catch((e) => {console.error(e); core.setFailed("installation failed unexpectedly.");});
+})().catch((e) => {console.error(e); require('@actions/core').setFailed("installation failed unexpectedly.");});
