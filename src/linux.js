@@ -28,9 +28,10 @@ export async function downloadAndCompile(link, id, branch, configures="") {
     await exec('git clone', [link, '--depth', '1', '--branch', branch, container]);
 
     core.info("Compiling " + id);
-    await exec('bash', ['-c', '"cd ' + container + '; ./autogen.sh"']);
+    await exec('echo', ['bash', '-c', '"cd ' + container + '; ./autogen.sh"']);
+    throw new Error();
     await exec('bash', ['-c', '"cd ' + container + '; ./configure --prefix=/usr ' + configures + '"']);
-    await exec('bash', ['-c', '"cd ' + container + '; ./make"']);
+    await exec('bash', ['-c', '"cd ' + container + '; make"']);
 }
 
 export async function installTarget(id, with_py_module) {
