@@ -10,11 +10,10 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
-        os: [ubuntu-18.04]
-        vs-version: [latest, 50, 49, 48, 47, 47.2, 47.1, "47.0", 46, 45.1, "45.0", 45, 44]
+        vs-version: [latest, 50, 49, 48, 47, 47.2, 47.1, 46, 45.1, "45.0", 45, 44]
         include:
         - vs-version: latest
           python-version: 3.8
@@ -30,8 +29,6 @@ jobs:
           python-version: 3.7
         - vs-version: 47.1
           python-version: 3.7
-        - vs-version: 47.0
-          python-version: 3.7
         - vs-version: 46
           python-version: 3.7
         - vs-version: 45.1
@@ -42,9 +39,6 @@ jobs:
           python-version: 3.7
         - vs-version: 44
           python-version: 3.6
-        exclude:
-        - vs-version: "47.0"
-          os: ubuntu-18.04
 
 
     steps:
