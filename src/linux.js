@@ -1,3 +1,4 @@
+const io = require('@actions/io');
 const core = require('@actions/core');
 const cache = require('@actions/cache');
 const { exec } = require('@actions/exec');
@@ -51,6 +52,7 @@ export async function install(link, id, branch, configures="", with_py_module=fa
         core.info(cc);
         core.info(container);
         core.info(typeof container);
+        await io.mkdirP(container);
         const cacheKey = await cache.restoreCache(cc, [container]);
         if (cacheKey === undefined) {
             await downloadAndCompile(link, id, branch, configures);
@@ -58,6 +60,8 @@ export async function install(link, id, branch, configures="", with_py_module=fa
         await cache.saveCache([container], cc);
 
         await installTarget(id, with_py_module);
+
+        await io.rmRF(container);
     } finally {
         core.endGroup();
     }
