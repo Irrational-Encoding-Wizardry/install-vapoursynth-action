@@ -65,7 +65,7 @@ export async function install(link, id, branch, configures="", with_py_module=fa
 
 
 export async function run(config) {
-    const vsbranch = config.vsbranch;
+    const vs_branch = config.vs_branch;
     const zimg_branch = config.zimg_branch;
 
     await install("https://github.com/sekrit-twc/zimg", "zimg", zimg_branch);
