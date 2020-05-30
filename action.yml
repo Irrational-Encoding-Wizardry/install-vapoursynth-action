@@ -5,6 +5,10 @@ inputs:
     description: 'The version to install'
     required: true
     default: 'latest'
+  cache:
+    description: 'Cache the compilation'
+    required: false
+    default: true
 outputs:
   version:
     description: 'Contains the actually installed version'

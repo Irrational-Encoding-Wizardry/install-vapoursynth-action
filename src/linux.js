@@ -51,7 +51,25 @@ export async function installTarget(id, with_py_module) {
 }
 
 
-export async function install(link, id, branch, configures="", with_py_module=false) {
+actually_use_cache = {
+    access: cache.restoreCache,
+    async push(files, key) {
+        if ((await cache.restoreCache([container], cc)) === undefined)
+            await cache.saveCache([container], cc);
+    }
+}
+
+skip_cache = {
+    async access(files, key) {
+        return undefined;
+    },
+    async push(files, key) {
+        return;
+    }
+}
+
+
+export async function install(link, id, branch, configures="", with_py_module=false, cache=actually_use_cache) {
     const container = get_container_from_id(id);
     const cc = "install-vapoursynth--linux-" + (await lsb_version()) + "--" + id + "--" + branch;
 
@@ -73,10 +91,12 @@ export async function install(link, id, branch, configures="", with_py_module=fa
 }
 
 
-export async function run(config) {
+export async function run(config, with_cache=true) {
     const vs_branch = config.vs_branch;
     const zimg_branch = config.zimg_branch;
 
-    await install("https://github.com/sekrit-twc/zimg", "zimg", zimg_branch);
-    await install("https://github.com/vapoursynth/vapoursynth", "vs", vs_branch, ["--disable-vsscript", "--disable-python-module"], true);
+    const cache_access = (with_cache) ? actually_use_cache : skip_cache;
+
+    await install("https://github.com/sekrit-twc/zimg", "zimg", zimg_branch, [], false, cache_access);
+    await install("https://github.com/vapoursynth/vapoursynth", "vs", vs_branch, ["--disable-vsscript", "--disable-python-module"], true, cache_access);
 }
