@@ -47,6 +47,9 @@ jobs:
           python-version: 3.6
         - vs-version: 42
           python-version: 3.6
+        exclude:
+        - vs-version: 47.1
+          os: ubuntu-18.04
 
 
     steps:
