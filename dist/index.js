@@ -1511,12 +1511,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VS_ALIASES", function() { return VS_ALIASES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VS_VERSIONS", function() { return VS_VERSIONS; });
 const VS_ALIASES = {
-    "latest": "50",
+    "latest": "51",
     "47": "47.2",
     "45": "45.0"
 };
 
 const VS_VERSIONS = {
+    "51": {
+        pypi_version: "51",
+        minor: "51",
+        vs_branch: "R51",
+        zimg_branch: "v2.9"
+    },
     "50": {
         pypi_version: "50",
         minor: "50",
@@ -1578,6 +1584,7 @@ const VS_VERSIONS = {
         zimg_branch: "v2.7"
     }
 }
+
 
 /***/ }),
 /* 25 */
