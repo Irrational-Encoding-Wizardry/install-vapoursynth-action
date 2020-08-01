@@ -1,5 +1,5 @@
 export const VS_ALIASES = {
-    "latest": "50",
+    "latest": "51",
     "47": "47.2",
     "45": "45.0"
 };
