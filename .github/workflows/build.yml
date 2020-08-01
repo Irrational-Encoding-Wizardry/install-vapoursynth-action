@@ -13,9 +13,11 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        vs-version: [latest, 50, 49, 48, 47, 47.2, 47.1, 46, 45.1, "45.0", 45, 44]
+        vs-version: [latest, 51, 50, 49, 48, 47, 47.2, 47.1, 46, 45.1, "45.0", 45, 44]
         include:
         - vs-version: latest
+          python-version: 3.8
+        - vs-version: 51
           python-version: 3.8
         - vs-version: 50
           python-version: 3.8
