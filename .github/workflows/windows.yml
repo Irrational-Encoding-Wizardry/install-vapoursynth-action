@@ -157,7 +157,7 @@ jobs:
       run: |
         $version=((Invoke-WebRequest https://api.github.com/repos/vapoursynth/vapoursynth/releases/latest).Content | ConvertFrom-JSON).tag_name
         pip install luddite
-        python -c "import luddite,sys;sys.exit(luddite.get_version_pypi('vapoursynth') < '$version'[1:])"
-        if ("$LastExitCode" -eq "0") {
+        
+        if (python -c "import luddite,sys;print('R' + luddite.get_version_pypi('vapoursynth'))" -gt $version) {
           echo YES
         }
