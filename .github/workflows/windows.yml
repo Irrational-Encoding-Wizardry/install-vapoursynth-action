@@ -151,9 +151,30 @@ jobs:
       with:
         # Version range or exact version of a Python version to use, using SemVer's version range syntax.
         python-version: 3.8
-        # The target architecture (x86, x64) of the Python interpreter.
-        architecture: ${{ matrix.arch }}
-    - name: Upload build if it is current
-      run: |
-        ls
         
+    - name: Move files
+      run: |
+        mkdir vapoursynth
+        mkdir vapoursynth_portable
+        
+        cp VapourSynth-* vapoursynth
+        cp VapourSynth_portable-* vapoursynth_portable
+        
+        ls vapoursynth
+        ls vapoursynth_portable
+        
+    - name: Publish package to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_VS }}
+        packages_dir: vapoursynth/
+        repository_url: https://test.pypi.org/legacy/
+        
+    - name: Publish package to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_VS_P }}
+        packages_dir: vapoursynth_portable/
+        repository_url: https://test.pypi.org/legacy/
