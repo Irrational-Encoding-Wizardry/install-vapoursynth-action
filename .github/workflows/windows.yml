@@ -140,6 +140,7 @@ jobs:
           
   update-pypi:
     runs-on: windows-latest
+    needs: build-msvc
     steps:
     - name: Download build artifacts
       uses: actions/download-artifact@v2
