@@ -25,7 +25,7 @@ jobs:
     steps:
     - name: Clone VapourSynth
       run: |
-        version=((Invoke-WebRequest https://api.github.com/repos/vapoursynth/vapoursynth/releases/latest).Content | ConvertFrom-JSON).tag_name
+        $version=((Invoke-WebRequest https://api.github.com/repos/vapoursynth/vapoursynth/releases/latest).Content | ConvertFrom-JSON).tag_name
         git clone https://github.com/vapoursynth/vapoursynth . -depth 1 --branch $version
 
     - name: Add msbuild to PATH
