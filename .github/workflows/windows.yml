@@ -169,7 +169,6 @@ jobs:
         user: __token__
         password: ${{ secrets.PYPI_VS }}
         packages_dir: vapoursynth/
-        repository_url: https://test.pypi.org/legacy/
         
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
@@ -177,4 +176,3 @@ jobs:
         user: __token__
         password: ${{ secrets.PYPI_VS_P }}
         packages_dir: vapoursynth_portable/
-        repository_url: https://test.pypi.org/legacy/
