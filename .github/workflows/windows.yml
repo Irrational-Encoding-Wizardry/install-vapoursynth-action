@@ -3,7 +3,7 @@ name: Windows
 on:
   push: {}
   schedule:
-    - cron:  "28 9,21 * * *"
+    - cron:  "28 21 * * *"
 
 jobs:
   build-msvc:
