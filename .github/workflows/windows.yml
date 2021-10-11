@@ -1,0 +1,119 @@
+name: Windows
+
+on:
+  push: {}
+  schedule:
+    - cron:  "28 9,21 * * *"
+
+jobs:
+  build-msvc:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1
+  
+    - name: Clone Dependencies
+      run: |
+        git clone https://github.com/vapoursynth/vsrepo --depth 1
+        git clone https://github.com/sekrit-twc/zimg --branch v3.0 --depth 1
+        git clone https://github.com/AviSynth/AviSynthPlus.git --depth 1
+        git clone https://github.com/sekrit-twc/libp2p --depth 1
+        git clone https://github.com/microsoft/mimalloc --depth 1
+
+    - name: Build mimalloc
+      run: |
+        cd mimalloc
+        msbuild ide/vs2019/mimalloc.sln /p:Configuration=Release /p:Platform=${{ matrix.arch }}
+        cd ..
+
+    - name: Setup Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+        python-version: 3.8
+        # The target architecture (x86, x64) of the Python interpreter.
+        architecture: ${{ matrix.arch }}
+
+    - name: Patch Python 3.8 Include Paths
+      run: |
+        $py_include_path = ((Split-Path -Path (Get-Command python.exe).Path) + "\include" )
+        $py_binary_path = ((Split-Path -Path (Get-Command python.exe).Path) + "\libs" )
+        (Get-Content -Path "msvc_project/VSScriptPython38/VSScriptPython38.vcxproj" -Raw) -replace "C:\\Program Files %28x86%29\\Python38-32\\libs",$py_binary_path | Set-Content "msvc_project/VSScriptPython38/VSScriptPython38.vcxproj"
+        (Get-Content -Path "msvc_project/VSScriptPython38/VSScriptPython38.vcxproj" -Raw) -replace "C:\\Program Files %28x86%29\\Python38-32\\include",$py_include_path | Set-Content "msvc_project/VSScriptPython38/VSScriptPython38.vcxproj"
+        (Get-Content -Path "msvc_project/VSScriptPython38/VSScriptPython38.vcxproj" -Raw) -replace "C:\\Program Files\\Python38\\libs",$py_binary_path | Set-Content "msvc_project/VSScriptPython38/VSScriptPython38.vcxproj"
+        (Get-Content -Path "msvc_project/VSScriptPython38/VSScriptPython38.vcxproj" -Raw) -replace "C:\\Program Files\\Python38\\include",$py_include_path | Set-Content "msvc_project/VSScriptPython38/VSScriptPython38.vcxproj"
+
+    - name: Setup Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+        architecture: ${{ matrix.arch }}
+
+    - name: Install cython
+      run: |
+        python -m pip install --upgrade pip
+        pip install cython
+        
+    - name: Patch Python 3.9 Include Paths
+      run: |
+        $py_include_path = ((Split-Path -Path (Get-Command python.exe).Path) + "\include" )
+        $py_binary_path = ((Split-Path -Path (Get-Command python.exe).Path) + "\libs" )
+        (Get-Content -Path "msvc_project\VSScript\VSScript.vcxproj" -Raw) -replace "C:\\Program Files %28x86%29\\Python39-32\\libs",$py_binary_path | Set-Content "msvc_project\VSScript\VSScript.vcxproj"
+        (Get-Content -Path "msvc_project\VSScript\VSScript.vcxproj" -Raw) -replace "C:\\Program Files %28x86%29\\Python39-32\\include",$py_include_path | Set-Content "msvc_project\VSScript\VSScript.vcxproj"
+        (Get-Content -Path "msvc_project\VSScript\VSScript.vcxproj" -Raw) -replace "C:\\Program Files\\Python39\\libs",$py_binary_path | Set-Content "msvc_project\VSScript\VSScript.vcxproj"
+        (Get-Content -Path "msvc_project\VSScript\VSScript.vcxproj" -Raw) -replace "C:\\Program Files\\Python39\\include",$py_include_path | Set-Content "msvc_project\VSScript\VSScript.vcxproj"
+
+    - name: Compile
+      run: |
+        msbuild msvc_project/VapourSynth.sln /t:Build /p:Configuration=Release /p:Platform=${{ matrix.platform }}
+
+        pip install . --no-deps
+        
+        
+        pushd installer
+        $env:SKIP_COMPRESS="yes"
+        $env:SKIP_WAIT="yes"
+        & ".\make portable.bat"
+        
+        if ("${{ matrix.arch }}" -eq "x64") {
+          pushd buildp64
+        } else {
+          pushd buildp32
+        }
+        pip install . --no-deps
+        
+        
+        popd
+        popd
+
+    - name: Run test
+      if: ${{ matrix.test }}
+      run: python -m unittest discover -s test -p "*test.py"
+      
+    - name: Package
+      run: |
+        mkdir wheels
+        pip install wheel
+        python setup.py bdist_wheel -d ./wheels
+        pushd installer
+        if ("${{ matrix.arch }}" -eq "x64") {
+          pushd buildp64
+        } else {
+          pushd buildp32
+        }
+        
+        python setup.py bdist_wheel -d ../../wheels
+        
+        popd
+        popd
+      
+    - name: Upload math result for job 2
+      uses: actions/upload-artifact@v2
+      with:
+        name: Wheels
+        path: |
+          wheels/**/*.whl
+          wheels/*.whl
