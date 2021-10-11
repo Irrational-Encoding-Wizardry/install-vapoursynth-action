@@ -155,9 +155,5 @@ jobs:
         architecture: ${{ matrix.arch }}
     - name: Upload build if it is current
       run: |
-        $version=((Invoke-WebRequest https://api.github.com/repos/vapoursynth/vapoursynth/releases/latest).Content | ConvertFrom-JSON).tag_name
-        pip install luddite
+        ls
         
-        if (python -c "import luddite,sys;print('R' + luddite.get_version_pypi('vapoursynth'))" -gt $version) {
-          echo YES
-        }
