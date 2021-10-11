@@ -113,7 +113,7 @@ jobs:
         mkdir wheels
         pip install wheel
         python setup.py bdist_wheel -d ./wheels
-        python setup.py sdist -d ./wheels
+        python setup.py sdist -d ./wheels --format=zip
         
         pushd installer
         if ("${{ matrix.arch }}" -eq "x64") {
@@ -134,3 +134,5 @@ jobs:
         path: |
           wheels/**/*.whl
           wheels/*.whl
+          wheels/**/*.zip
+          wheels/*.zip
