@@ -128,7 +128,7 @@ jobs:
         popd
         popd
       
-    - name: Upload math result for job 2
+    - name: Upload build artefacts
       uses: actions/upload-artifact@v2
       with:
         name: Wheels
@@ -137,3 +137,19 @@ jobs:
           wheels/*.whl
           wheels/**/*.zip
           wheels/*.zip
+          
+  update-pypi:
+    runs-on: windows-latest
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: Wheels
+    - name: Upload build if it is current
+      run: |
+        $version=((Invoke-WebRequest https://api.github.com/repos/vapoursynth/vapoursynth/releases/latest).Content | ConvertFrom-JSON).tag_name
+        pip install luddite
+        python -c "import luddite,sys;sys.exit(luddite.get_version_pypi('vapoursynth') < '$version'[1:])"
+        if ("$LastExitCode" -eq "0") {
+          echo YES
+        }
