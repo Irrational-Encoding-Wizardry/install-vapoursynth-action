@@ -146,6 +146,13 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: Wheels
+    - name: Setup Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        # Version range or exact version of a Python version to use, using SemVer's version range syntax.
+        python-version: 3.8
+        # The target architecture (x86, x64) of the Python interpreter.
+        architecture: ${{ matrix.arch }}
     - name: Upload build if it is current
       run: |
         $version=((Invoke-WebRequest https://api.github.com/repos/vapoursynth/vapoursynth/releases/latest).Content | ConvertFrom-JSON).tag_name
