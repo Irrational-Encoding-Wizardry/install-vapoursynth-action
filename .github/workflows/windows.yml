@@ -10,7 +10,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Clone VapourSynth
+      run: |
+        git clone https://github.com/vapoursynth/vapoursynth .
 
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1
