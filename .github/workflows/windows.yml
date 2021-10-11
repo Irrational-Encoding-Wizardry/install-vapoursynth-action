@@ -139,7 +139,7 @@ jobs:
           wheels/*.zip
           
   update-pypi:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build-msvc
     steps:
     - name: Download build artifacts
