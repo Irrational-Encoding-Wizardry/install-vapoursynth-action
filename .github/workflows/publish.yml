@@ -4,6 +4,7 @@ on:
   push: {}
   schedule:
   - cron:  "28 21 * * *"
+  workflow_dispatch: {}
 
 jobs:
   build-msvc:
