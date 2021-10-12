@@ -154,11 +154,17 @@ jobs:
         pip install luddite
         PYPI_VERSION=$(python -c 'import luddite;print("R"+luddite.get_version_pypi("vapoursynth"))')
         RELEASE_VERSION=$(wget -qO- https://api.github.com/repos/vapoursynth/vapoursynth/releases/latest | jq -r ".tag_name")
+        echo =====================================
+        echo $PYPI_VERSION
+        echo $RELEASE_VERSION
         if [[ "$PYPI_VERSION" != "$RELEASE_VERSION" ]]; then
+          echo UPDATE_VAPOURSYNTH=YES
           echo "UPDATE_VAPOURSYNTH=YES" >>  $GITHUB_ENV
         else
+          echo UPDATE_VAPOURSYNTH=NO
           echo "UPDATE_VAPOURSYNTH=NO" >>  $GITHUB_ENV
         fi
+        echo =====================================
         
     - name: Download build artifacts
       uses: actions/download-artifact@v2
