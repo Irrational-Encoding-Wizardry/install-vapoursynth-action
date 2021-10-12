@@ -154,7 +154,6 @@ jobs:
 
     - name: Download build artifacts
       uses: actions/download-artifact@v2
-      if: ${{ steps.compare.outputs.update_vapoursynth == 'yes' }}
       with:
         name: Wheels
     
@@ -228,7 +227,6 @@ jobs:
         
     - name: Download build artifacts
       uses: actions/download-artifact@v2
-      if: ${{ steps.compare.outputs.update_vapoursynth == 'yes' }}
       with:
         name: Wheels
     
