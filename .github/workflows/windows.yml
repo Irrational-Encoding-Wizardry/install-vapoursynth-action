@@ -162,12 +162,12 @@ jobs:
         
     - name: Download build artifacts
       uses: actions/download-artifact@v2
-      if: ${{ env.UPDATE_VAPURSYNTH == "YES" }}
+      if: ${{ env.UPDATE_VAPURSYNTH == 'YES' }}
       with:
         name: Wheels
         
     - name: Move files
-      if: ${{ env.UPDATE_VAPURSYNTH == "YES" }}
+      if: ${{ env.UPDATE_VAPURSYNTH == 'YES' }}
       run: |
         mkdir vapoursynth
         mkdir vapoursynth_portable
@@ -180,7 +180,7 @@ jobs:
         
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      if: ${{ env.UPDATE_VAPURSYNTH == "YES" }}
+      if: ${{ env.UPDATE_VAPURSYNTH == 'YES' }}
       with:
         user: __token__
         password: ${{ secrets.PYPI_VS }}
@@ -188,7 +188,7 @@ jobs:
         
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      if: ${{ env.UPDATE_VAPURSYNTH == "YES" }}
+      if: ${{ env.UPDATE_VAPURSYNTH == 'YES' }}
       with:
         user: __token__
         password: ${{ secrets.PYPI_VS_P }}
