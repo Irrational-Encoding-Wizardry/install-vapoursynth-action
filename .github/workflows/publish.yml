@@ -209,7 +209,6 @@ jobs:
         VERSION=$(wget -qO- https://api.github.com/repos/vapoursynth/vapoursynth/releases/latest | jq -r ".tag_name")
         git clone https://github.com/vapoursynth/vapoursynth --branch $VERSION --depth 1
         
-        
         pushd vapoursynth
         git clone https://github.com/sekrit-twc/zimg --branch v3.0 --depth 1
         pushd zimg
@@ -224,7 +223,8 @@ jobs:
         ./configure --prefix=/usr
         make -j2
         sudo make install -j2
-
+        popd
+        rm -rf vapoursynth
         
     - name: Download build artifacts
       uses: actions/download-artifact@v2
