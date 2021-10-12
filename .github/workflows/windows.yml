@@ -142,17 +142,32 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-msvc
     steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: Wheels
     - name: Setup Python 3.8
       uses: actions/setup-python@v2
       with:
         # Version range or exact version of a Python version to use, using SemVer's version range syntax.
         python-version: 3.8
         
+    - name: Determine VapourSynth Version
+      run: |
+        sudo apt-get install --yes jq wget
+        pip install luddite
+        PYPI_VERSION=$(python -c 'import luddite;print("R"+luddite.get_version_pypi("vapoursynth"))')
+        RELEASE_VERSION=$(wget -qO- https://api.github.com/repos/vapoursynth/vapoursynth/releases/latest | jq -r ".tag_name")
+        if [[ "$PYPI_VERSION" != "$RELEASE_VERSION" ]]; then
+          echo "UPDATE_VAPOURSYNTH=YES" >>  $GITHUB_ENV
+        else
+          echo "UPDATE_VAPOURSYNTH=NO" >>  $GITHUB_ENV
+        fi
+        
+    - name: Download build artifacts
+      uses: actions/download-artifact@v2
+      if: ${{ env.UPDATE_VAPURSYNTH == "YES" }}
+      with:
+        name: Wheels
+        
     - name: Move files
+      if: ${{ env.UPDATE_VAPURSYNTH == "YES" }}
       run: |
         mkdir vapoursynth
         mkdir vapoursynth_portable
@@ -165,6 +180,7 @@ jobs:
         
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
+      if: ${{ env.UPDATE_VAPURSYNTH == "YES" }}
       with:
         user: __token__
         password: ${{ secrets.PYPI_VS }}
@@ -172,6 +188,7 @@ jobs:
         
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
+      if: ${{ env.UPDATE_VAPURSYNTH == "YES" }}
       with:
         user: __token__
         password: ${{ secrets.PYPI_VS_P }}
