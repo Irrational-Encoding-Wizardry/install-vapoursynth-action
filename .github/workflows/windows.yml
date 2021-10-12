@@ -149,6 +149,7 @@ jobs:
         python-version: 3.8
         
     - name: Determine VapourSynth Version
+      id: compare
       run: |
         sudo apt-get install --yes jq wget
         pip install luddite
@@ -159,21 +160,21 @@ jobs:
         echo $RELEASE_VERSION
         if [[ "$PYPI_VERSION" != "$RELEASE_VERSION" ]]; then
           echo UPDATE_VAPOURSYNTH=YES
-          echo "UPDATE_VAPOURSYNTH=YES" >>  $GITHUB_ENV
+          echo ::set-output name=update_vapoursynth::yes
         else
           echo UPDATE_VAPOURSYNTH=NO
-          echo "UPDATE_VAPOURSYNTH=NO" >>  $GITHUB_ENV
+          echo ::set-output name=update_vapoursynth::no
         fi
         echo =====================================
         
     - name: Download build artifacts
       uses: actions/download-artifact@v2
-      if: ${{ env.UPDATE_VAPURSYNTH == 'YES' }}
+      if: ${{ steps.compare.outputs.update_vapoursynth == 'yes' }}
       with:
         name: Wheels
         
     - name: Move files
-      if: ${{ env.UPDATE_VAPURSYNTH == 'YES' }}
+      if: ${{ steps.compare.outputs.update_vapoursynth == 'yes' }}
       run: |
         mkdir vapoursynth
         mkdir vapoursynth_portable
@@ -186,7 +187,7 @@ jobs:
         
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      if: ${{ env.UPDATE_VAPURSYNTH == 'YES' }}
+      if: ${{ steps.compare.outputs.update_vapoursynth == 'yes' }}
       with:
         user: __token__
         password: ${{ secrets.PYPI_VS }}
@@ -194,7 +195,7 @@ jobs:
         
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      if: ${{ env.UPDATE_VAPURSYNTH == 'YES' }}
+      if: ${{ steps.compare.outputs.update_vapoursynth == 'yes' }}
       with:
         user: __token__
         password: ${{ secrets.PYPI_VS_P }}
