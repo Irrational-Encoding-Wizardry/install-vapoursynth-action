@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         arch: [x86, x64]
+        python: ["3.9", "3.10"]
         include:
           - arch: x86
             platform: Win32
@@ -46,11 +47,11 @@ jobs:
         msbuild ide/vs2019/mimalloc.sln /p:Configuration=Release /p:Platform=${{ matrix.arch }}
         cd ..
 
-    - name: Setup Python 3.8
+    - name: Setup Python
       uses: actions/setup-python@v2
       with:
         # Version range or exact version of a Python version to use, using SemVer's version range syntax.
-        python-version: 3.8
+        python-version: ${{ matrix.py }}
         # The target architecture (x86, x64) of the Python interpreter.
         architecture: ${{ matrix.arch }}
 
@@ -63,10 +64,10 @@ jobs:
         (Get-Content -Path "msvc_project/VSScriptPython38/VSScriptPython38.vcxproj" -Raw) -replace "C:\\Program Files\\Python38\\libs",$py_binary_path | Set-Content "msvc_project/VSScriptPython38/VSScriptPython38.vcxproj"
         (Get-Content -Path "msvc_project/VSScriptPython38/VSScriptPython38.vcxproj" -Raw) -replace "C:\\Program Files\\Python38\\include",$py_include_path | Set-Content "msvc_project/VSScriptPython38/VSScriptPython38.vcxproj"
 
-    - name: Setup Python 3.9
+    - name: Setup Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.9
+        python-version: ${{ matrix.python }}
         architecture: ${{ matrix.arch }}
 
     - name: Install cython
@@ -145,12 +146,13 @@ jobs:
     strategy:
       matrix:
         arch: [x86, x64]
+        python: ["3.9", "3.10"]
         
     steps:
     - name: Setup Python 3.9
       uses: actions/setup-python@v2
       with:
-        python-version: 3.9
+        python-version: ${{ matrix.version }}
         architecture: ${{ matrix.arch }}
 
     - name: Download build artifacts
@@ -173,6 +175,7 @@ jobs:
       
     strategy:
       matrix:
+        python: [ "3.9", "3.10" ]
         include:
           - cc: gcc-10
             cxx: g++-10
@@ -195,7 +198,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         # Version range or exact version of a Python version to use, using SemVer's version range syntax.
-        python-version: 3.9
+        python-version: ${{ matrix.python }}
 
     - name: Install cython
       run: |
