@@ -13,34 +13,44 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        vs-version: [latest, 51, 50, 49, 48, 47, 47.2, 47.1, 46, 45.1, "45.0", 45, 44]
+        vs-version: [latest, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47.2, 46, 45.1, 44]
         include:
         - vs-version: latest
-          python-version: 3.8
+          python-version: '3.10'  # or 3.8
+        - vs-version: 60
+          python-version: '3.10'  # or 3.8
+        - vs-version: 59
+          python-version: '3.10'  # or 3.8
+        - vs-version: 58
+          python-version: '3.10'  # or 3.8
+        - vs-version: 57
+          python-version: '3.9'
+        - vs-version: 56
+          python-version: '3.9'
+        - vs-version: 55
+          python-version: '3.9'
+        - vs-version: 54
+          python-version: '3.9'
+        - vs-version: 53
+          python-version: '3.9'
+        - vs-version: 52
+          python-version: '3.8'
         - vs-version: 51
-          python-version: 3.8
+          python-version: '3.8'
         - vs-version: 50
-          python-version: 3.8
+          python-version: '3.8'
         - vs-version: 49
-          python-version: 3.8
+          python-version: '3.8'
         - vs-version: 48
-          python-version: 3.7
-        - vs-version: 47
-          python-version: 3.7
+          python-version: '3.7'
         - vs-version: 47.2
-          python-version: 3.7
-        - vs-version: 47.1
-          python-version: 3.7
+          python-version: '3.7'
         - vs-version: 46
-          python-version: 3.7
+          python-version: '3.7'
         - vs-version: 45.1
-          python-version: 3.7
-        - vs-version: 45.0
-          python-version: 3.7
-        - vs-version: 45
-          python-version: 3.7
+          python-version: '3.7'
         - vs-version: 44
-          python-version: 3.6
+          python-version: '3.6'
 
 
     steps:
