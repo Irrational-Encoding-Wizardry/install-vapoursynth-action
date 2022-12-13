@@ -1,10 +1,70 @@
 export const VS_ALIASES = {
-    "latest": "51",
+    "latest": "61",
     "47": "47.2",
     "45": "45.0"
 };
 
 export const VS_VERSIONS = {
+    "61": {
+        pypi_version: "61",
+        minor: "61",
+        vs_branch: "R61",
+        zimg_branch: "v3.0"
+    },
+    "60": {
+        pypi_version: "60",
+        minor: "60",
+        vs_branch: "R60",
+        zimg_branch: "v3.0"
+    },
+    "59": {
+        pypi_version: "59",
+        minor: "59",
+        vs_branch: "R59",
+        zimg_branch: "v3.0"
+    },
+    "58": {
+        pypi_version: "58",
+        minor: "58",
+        vs_branch: "R58",
+        zimg_branch: "v3.0"
+    },
+    "57": {
+        pypi_version: "57",
+        minor: "57",
+        vs_branch: "R57",
+        zimg_branch: "v3.0"
+    },
+    "56": {
+        pypi_version: "56",
+        minor: "56",
+        vs_branch: "R56",
+        zimg_branch: "v3.0"
+    },
+    "55": {
+        pypi_version: "55",
+        minor: "55",
+        vs_branch: "R55",
+        zimg_branch: "v3.0"
+    },
+    "54": {
+        pypi_version: "54",
+        minor: "54",
+        vs_branch: "R54",
+        zimg_branch: "v2.9"
+    },
+    "53": {
+        pypi_version: "53",
+        minor: "53",
+        vs_branch: "R53",
+        zimg_branch: "v2.9"
+    },
+    "52": {
+        pypi_version: "52",
+        minor: "52",
+        vs_branch: "R52",
+        zimg_branch: "v2.9"
+    },
     "51": {
         pypi_version: "51",
         minor: "51",

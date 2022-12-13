@@ -33,6 +33,17 @@ Currently it is tested with these versions on Windows and Linux:
 
 | VapourSynth | Python-Version | Notes |
 | ----------- | --------- | ---- |
+| R61 | Python 3.10 and 3.8 | |
+| R60 | Python 3.10 and 3.8 | |
+| R59 | Python 3.10 and 3.8 | |
+| R58 | Python 3.10 and 3.8 | |
+| R57 | Python 3.9 | |
+| R56 | Python 3.9 | |
+| R55 | Python 3.9 | |
+| R54 | Python 3.9 | |
+| R53 | Python 3.9 | |
+| R52 | Python 3.8 | |
+| R51 | Python 3.8 | |
 | R50 | Python 3.8 | |
 | R49 | Python 3.8 | |
 | R47.2 | Python 3.7 | |
